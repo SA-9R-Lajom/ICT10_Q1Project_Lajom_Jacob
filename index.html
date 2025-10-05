@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384..." crossorigin="anonymous">
+<script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+<link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<title>Midnight Tokyo Brewery</title>
+<style>
+    body {
+        background-color: #0080ffc8;
+        color: #191b1d;
+    }
+    h1 {
+        font-family: 'Arial', sans-serif;
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+    p {
+        font-family: 'Georgia', serif;
+        font-size: 1.125rem;
+        line-height: 1.5;
+        min-height: 2.5rem;
+        padding-bottom: 50px;
+        scroll-behavior: smooth;
+    }
+
+    .navbar {
+        background-color: #343a40;
+        padding: 1rem;
+    }
+    .navbar a {
+        color: #ffffff;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+    }
+    .navbar a:hover {
+        background-color: #495057;
+    }
+
+    .navbar-brand {
+        font-weight: bold;
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: 0.05em;
+    }
+
+    .nav-link {
+        color: ghostwhite;
+        padding: 8px 15px !important;
+        transition:all 0.3s ease;
+    }
+
+    .nav-link:hover {
+        color: white !important;
+        transform: translateY(-2px);
+    }
+
+    .nav-toggler {
+        border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .active {
+       background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+        font-weight: bold;
+    }
+    .header {        
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 2rem 0;
+        text-align: center;
+        border-radius: 15px;
+        margin: 20px 0 40px;
+        box-shadow: 0 10px 30px rgba(13, 110, 253, 0.2);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.1));
+        z-index: 0;
+    }
+    
+    .resturant-icon {
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        color: #000000;
+        animation: spin 4s linear infinite;
+        text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .menu-card 
+    {
+        background-color: #ffffff;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        border:none;
+        margin-bottom: 30px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .menu-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .table {
+        margin-bottom: 0;
+    }
+    
+    th {
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        color: white;
+        padding: 15px !important;
+        font-size: 1.2rem;
+        position: relative;
+    }
+    
+    th:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(to right, #0d6efd, #6610f2);
+        border-radius: 2px;
+    }
+
+    td {
+        padding: 12px !important;
+        transition: all 0.2s ease;
+    }
+
+    .price {
+        font-weight: bold;
+        color: #2c3e50;
+    }
+
+    .table-hove tbody tr:hover {
+        background-color: #f1f1f1;
+        transform: scale(1.01);
+    }
+
+    .order-btn {
+        background: linear-gradient(to right, #0d6efd, #00a2ff);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        cursor: pointer;
+        font-size: 1.1 rem;
+        font-weight: 600;
+        overflow: hidden;
+        display: inline-block;
+        margin: 20px 0;
+    }
+
+    .order-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .order-btn:active {
+        transform: translateY(0);
+        box-shadow: none;
+    }
+
+    .opening-hours {
+        background: linear-gradient(to right, #f8f9fa, #e9ecef);
+        padding: 20px;
+        border-radius: 12px;
+        margin: 30px 0;
+        font-size: normal;
+        border-left: 5px solid #0d6efd;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        text-align: center;
+    }
+
+    .floating-order-btn .btn {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to right, #0d6efd, #00a2ff);
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .floating-order-btn .btn:hover {
+        transform: scale(1.1);
+    }
+
+@media (max-width: 992px) {
+    .floating-order-btn {
+        display: block;
+    }
+    .header {
+        padding: 25px 15px;
+        margin: 15px 0 30px;
+        
+    .resturant-icon {
+        font-size: 3rem;
+         }
+    }
+
+    @media (max-width: 576px) {
+        .header {
+            padding: 20px 10px;
+            margin: 10px 0 20px;
+        }
+        .resturant-icon {
+            font-size: 2.5rem;
+        }
+
+        .header {
+            border-radius :8px;
+        }
+
+        .menu-card {
+            border-radius: 10px;
+        }
+    }
+    <body> 
+    <style>
+    </style>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-coffee me-2"></i>Too Brew</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ordering_form.html">Order Now</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact_us.html">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container text-center">
+        <i class="fas fa-utensils restaurant-icon"></i>
+        <div id="name" class="display-4 fw-bold"></div>
+        <div id="owner" class="fs-5 mt-2"></div>
+        <div id="since" class="fs-6"></div>
+    </div>
+    
+    <div class="div menu-card">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th id="heading1" colspan="2" style="text-align: center;"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><b>Product Name</b></td>
+                    <td><b>Price ($)</b></td>
+                </tr>
+                <tr>
+                    <td id="prod1"></td>
+                    <td id="price1" class="price"></td>
+                </tr>
+                <tr>
+                    <td id="prod2"></td>
+                    <td id="price2" class="price"></td>
+                </tr>
+                <tr>
+                    <td id="prod3"></td>
+                    <td id="price3" class="price"></td>
+                </tr>
+                <tr>
+                    <td id="prod4"></td>
+                    <td id="price4" class="price"></td>
+                </tr>
+                <tr>
+                    <td id="prod5"></td>
+                    <td id="price5" class="price"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <center>
+        <a href="ordering_form.html">
+            <button class="order-btn">
+                <i class="fas fa-shopping-cart me-2"></i>Order Now
+            </button>
+        </a>
+    </center>
+    <div class="div opening-hours">
+        <i class="fas fa-clock me-2"></i>
+        <span id="openingHours"></span>
+    </div>
+    <div class="div text-center mt-4">
+        <span id="orderType" class="badge bg-primary p-2"></span>
+    </div>
+    <a href="ordering_form.html" class="floating-order-btn btn-primary rounded-circle p-3 shadow d-lg-none">
+        <i class="fas fa-shopping-cart"></i>
+    </a>
+    <script type="text/javascript" src="main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
